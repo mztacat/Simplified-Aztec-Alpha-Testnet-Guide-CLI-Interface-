@@ -229,7 +229,7 @@ aztec start \
 
 ### You’re getting a TypeError: fetch failed → ConnectTimeoutError, which means the Aztec node can’t reach external resources (likely the L1 RPC or bootnode URLs).
 ![image](https://github.com/user-attachments/assets/0ae5dbdb-da0c-49fa-9299-d8cf0d964b55)
-![image](https://github.com/user-attachments/assets/33f8530c-d13f-416c-811c-42fe687a62c5)
+
 
 * Enable UFW
 
