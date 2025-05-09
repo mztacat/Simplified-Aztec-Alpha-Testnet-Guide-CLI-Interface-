@@ -222,6 +222,42 @@ aztec start \
 ```
 
 
- 
+---------------
+# Troubleshooting Issues Discovered 
 
+
+
+### You’re getting a TypeError: fetch failed → ConnectTimeoutError, which means the Aztec node can’t reach external resources (likely the L1 RPC or bootnode URLs).
+![image](https://github.com/user-attachments/assets/0ae5dbdb-da0c-49fa-9299-d8cf0d964b55)
+![image](https://github.com/user-attachments/assets/33f8530c-d13f-416c-811c-42fe687a62c5)
+
+* Enable UFW
+
+```
+sudo ufw enable
+```
+
+* Allow Outbound connections
+
+```
+sudo ufw default allow outgoing
+sudo ufw default allow incoming
+```
+
+* Readd and reload
+
+```
+sudo ufw allow 22/tcp      
+sudo ufw allow 8080/tcp     
+sudo ufw allow 40400/tcp   
+sudo ufw allow 40400/udp
+sudo ufw allow 40500/tcp 
+```
+
+```
+sudo ufw reload
+sudo ufw status verbose
+```
+
+## Now start Node again 
 
