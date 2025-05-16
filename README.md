@@ -261,3 +261,49 @@ sudo ufw status verbose
 
 ## Now start Node again 
 
+-----
+-----
+
+## Docker not Installed
+![image](https://github.com/user-attachments/assets/af616462-cb49-4b09-9642-dfe41bbc6cbe)
+
+```
+sudo apt update
+sudo apt install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+```
+
+### Add Docker Key 
+```
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+```
+
+### Set up Docker REPO
+
+```
+echo \
+  "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+
+### Update and Ins.tall Docker
+
+```
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### Verify Installation 
+
+```
+docker --version
+```
