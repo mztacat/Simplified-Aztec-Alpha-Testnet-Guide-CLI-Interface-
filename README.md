@@ -220,6 +220,57 @@ aztec start \
   --node \
   --sequencer
 ```
+------
+# Enable Governance Voting (Aztec Public Testnet) 
+### If you’re running a sequencer on Aztec’s Public Testnet, you must participate in governance votes to help pass proposals. Proposals only pass if the majority of active block proposers (sequencers) vote in favor.
+
+* Add Governance Payload
+## OPTION 1: Using CLI Flag 
+Add the following to Aztec command flag 
+```
+--sequencer.governanceProposerPayload 0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
+```
+![image](https://github.com/user-attachments/assets/90c187ea-d364-486b-9bd4-b19505db51f5)
+
+`e.g` 
+```
+aztec start --node --archiver --sequencer \
+  --network alpha-testnet \
+  --l1-rpc-urls "" \
+  --l1-consensus-host-urls "" \
+  --sequencer.validatorPrivateKey "" \
+  --p2p.p2pIp "" \
+  --p2p.maxTxPoolSize 1000000000 \
+  --sequencer.governanceProposerPayload 0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
+```
+
+
+## Option B - Using Environmental Variable
+  ### If you’re using a .env file or environment config: 
+
+  Use command each time you start a new session (Temporary)
+```
+export GOVERNANCE_PROPOSER_PAYLOAD_ADDRESS=0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
+```
+
+### Or add to config file using the `.bashrc file ` 
+
+```
+nano ~/.bashrc
+```
+
+### Add the following line at the end of the file:
+ 
+```
+export GOVERNANCE_PROPOSER_PAYLOAD_ADDRESS=0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
+```
+
+### Reload `.bashrc` file to apply change 
+
+```
+source ~/.bashrc
+```
+
 
 
 ---------------
