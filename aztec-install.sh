@@ -1,7 +1,12 @@
 #!/bin/bash
 
 echo "... [MZTACAT AUTO SCRIPT TEST]..."
-sudo su
+
+if [ "$EUID" -ne 0 ]; then
+  echo "⚠️  Please run this script as root (use: sudo ./aztec-install.sh)"
+  exit 1
+fi
+
 
 echo "Navigating to home directory..."
 cd ~
