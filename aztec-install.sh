@@ -3,7 +3,7 @@
 echo "... [MZTACAT AUTO SCRIPT TEST]..."
 
 if [ "$EUID" -ne 0 ]; then
-  echo "⚠️  Please run this script as root (use: sudo ./aztec-install.sh)"
+  echo "⚠️  Please run this script as root (use: sudo su and enter password)"
   exit 1
 fi
 
