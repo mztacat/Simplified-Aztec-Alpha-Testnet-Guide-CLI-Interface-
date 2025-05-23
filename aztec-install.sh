@@ -3,10 +3,9 @@
 echo "... [MZTACAT AUTO SCRIPT TEST]..."
 
 if [ "$EUID" -ne 0 ]; then
-  echo "⚠️  Please run this script as root (use: sudo su and enter password)"
+  echo "⚠️  Please run this script as root (use: sudo ./aztec-install.sh)"
   exit 1
 fi
-
 
 echo "Navigating to home directory..."
 cd ~
@@ -45,7 +44,6 @@ read -p "Enter your local IP (use curl ifconfig.me if unsure): " LOCAL_IP
 read -p "Enter your Alchemy Sepolia RPC URL: " RPC_URL
 read -p "Enter your Consensus RPC (lodestar-sepolia): " CONSENSUS_URL
 
-echo "export DATA_DIRECTORY=/root/aztec-data/" >> ~/.bashrc
 echo "export COINBASE=$COINBASE" >> ~/.bashrc
 echo "export LOG_LEVEL=debug" >> ~/.bashrc
 echo "export P2P_MAX_TX_POOL_SIZE=1000000000" >> ~/.bashrc
@@ -54,20 +52,16 @@ source ~/.bashrc
 
 echo "Setup complete!"
 echo ""
-echo "You can now launch your node in a screen session:"
-echo ""
-echo "screen -S aztec"
-echo ""
-echo "aztec start \\"
-echo "  --network alpha-testnet \\"
-echo "  --l1-rpc-urls \"$RPC_URL\" \\"
-echo "  --l1-consensus-host-urls \"$CONSENSUS_URL\" \\"
-echo "  --sequencer.validatorPrivateKey \"$PRIVATE_KEY\" \\"
-echo "  --p2p.p2pIp \"$LOCAL_IP\" \\"
-echo "  --p2p.maxTxPoolSize 1000000000 \\"
-echo "  --archiver \\"
-echo "  --node \\"
-echo "  --sequencer \\"
-echo "  --sequencer.governanceProposerPayload 0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef"
-echo ""
-echo "To reattach the session: screen -r aztec"
+echo "Launching Aztec node..."
+
+aztec start \
+  --network alpha-testnet \
+  --l1-rpc-urls "$RPC_URL" \
+  --l1-consensus-host-urls "$CONSENSUS_URL" \
+  --sequencer.validatorPrivateKey "$PRIVATE_KEY" \
+  --p2p.p2pIp "$LOCAL_IP" \
+  --p2p.maxTxPoolSize 1000000000 \
+  --archiver \
+  --node \
+  --sequencer \
+  --sequencer.governanceProposerPayload 0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
