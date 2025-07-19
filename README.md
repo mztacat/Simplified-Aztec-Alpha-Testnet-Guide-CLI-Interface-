@@ -370,4 +370,11 @@ docker --version
 aztec-up 0.87.9 && sed -i 's/latest/0.87.9/' "$HOME/.aztec/bin/.aztec-run" && aztec -V
 ```
 
+### Clear Data and WORLDSTATE 
+```
+rm -rf /tmp/aztec-world-state-*
+rm -rf ~/.aztec/alpha-testnet/data
+```
+
+
 ## Head back to [start Aztec with command](https://github.com/mztacat/Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-/edit/main/README.md#starting-node) 
