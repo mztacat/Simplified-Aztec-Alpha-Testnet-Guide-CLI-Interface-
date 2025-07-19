@@ -1,4 +1,4 @@
-# Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-
+<img width="4020" height="2508" alt="image" src="https://github.com/user-attachments/assets/b38e0680-985e-4078-8a23-791eae5ff611" /># Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-
 
 
 
@@ -358,3 +358,16 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 ```
 docker --version
 ```
+
+
+# Issues and FAQs 
+
+
+### If you’re getting auto-upgraded to v1.x and want to stay on v0.87.9, use this:
+<img width="4020" height="1348" alt="image" src="https://github.com/user-attachments/assets/4a0673c5-0c4f-4bdc-a01e-61eb6496dc3e" />
+
+```
+aztec-up 0.87.9 && sed -i 's/latest/0.87.9/' "$HOME/.aztec/bin/.aztec-run" && aztec -V
+```
+
+## Head back to [start Aztec with command](https://github.com/mztacat/Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-/edit/main/README.md#starting-node) 
