@@ -416,7 +416,20 @@ aztec start \
 ```
 --sequencer.validatorPrivateKeys "0xkey1,0xkey2,..."
 ```
-    
+
+-----
+## For those using Docker command 
+###  Option 2: Advanced / Manual Setup (Docker or Binary)
+
+### ✅ Steps:
+
+* Upgrade your Docker image or binary to v1.1.0.
+* Update your startup command:
+  + Replace --sequencer.validatorPrivateKey ➡️ with `--sequencer.validatorPrivateKeys`
+  + Provide a comma-separated list of private keys.
+  + (Optional) Set `--sequencer.publisherPrivateKey` for transaction posting. Only this key needs Sepolia ETH.
+
+
 ----
 # Issues and FAQs 
 
