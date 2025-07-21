@@ -377,6 +377,12 @@ docker --version
 ```
 aztec-up 1.1.0
 ```
+
+* Clear Data and Worldstate
+```
+rm -rf /tmp/aztec-world-state-*
+rm -rf ~/.aztec/alpha-testnet/data
+```
 <img width="2634" height="1020" alt="image" src="https://github.com/user-attachments/assets/02aa71fa-f7cd-4755-9b1f-6e047cbf8439" />
 
  * Update your startup command:
