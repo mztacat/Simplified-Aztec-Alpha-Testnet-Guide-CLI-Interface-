@@ -1,5 +1,5 @@
-<img width="4020" height="2508" alt="image" src="https://github.com/user-attachments/assets/b38e0680-985e-4078-8a23-791eae5ff611" /># Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-
 
+<img width="1200" height="600" alt="image" src="https://github.com/user-attachments/assets/c561e958-c451-4399-acb1-7c7881930995" />
 
 
 # To make Installation easier, make sure to Navigate into home directory
@@ -359,9 +359,66 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 docker --version
 ```
 
+-----------
+# Aztec Validator Upgrade Guide – v1.1.0 
+-----
 
+## Aztec Labs has released v1.1.0 for the Adversarial Testnet. All validators are required to upgrade by:
+ 📅 Monday, July 21st at 2PM (UTC+1)
+
+
+### Please follow the appropriate steps based on how you’ve set up your validator.
+
+ * Stop Aztec Node with `CTRL + C`
+<img width="2472" height="236" alt="image" src="https://github.com/user-attachments/assets/8faa0a72-bde3-4bc0-8b11-81866c9d01c5" />
+
+
+ * Upgrade to v1.1.0
+```
+aztec-up 1.1.0
+```
+<img width="2634" height="1020" alt="image" src="https://github.com/user-attachments/assets/02aa71fa-f7cd-4755-9b1f-6e047cbf8439" />
+
+ * Update your startup command:
+   + Replace --sequencer.validatorPrivateKey ➡️=>>> with `--sequencer.validatorPrivateKeys` (note the plural)
+   + Provide a comma-separated list of private keys to run multiple validators (eg: upto 10).
+     
+ * (Optional) Set a --sequencer.publisherPrivateKey
+   + This address will post transactions.
+   + Only this address needs to be funded with Sepolia ETH if you’re running multiple validators.
+
+### In your current shell use; 
+```
+export COINBASE=0xaddress
+export LOG_LEVEL=debug
+export P2P_MAX_TX_POOL_SIZE=1000000000
+```
+
+## Start Aztec with the command (e.g) 
+```
+aztec start \
+  --network alpha-testnet \
+  --l1-rpc-urls " " \
+  --l1-consensus-host-urls " " \
+  --sequencer.validatorPrivateKeys "      " \
+  --p2p.p2pIp "      " \
+  --archiver \
+  --node \
+  --sequencer
+```
+<img width="4020" height="768" alt="image" src="https://github.com/user-attachments/assets/99d4555f-8c93-4653-ae10-eb99f4ac1cc4" />
+
+
+## 🔁 Notes:
++ Changed --sequencer.validatorPrivateKey =>>  `--sequencer.validatorPrivateKeys`
++ Even if you’re using one key, it must still be passed as a string (in quotes) for the plural format.
++ You can add more keys by comma separating them:
+```
+--sequencer.validatorPrivateKeys "0xkey1,0xkey2,..."
+```
+    
+----
 # Issues and FAQs 
-
 
 ### If you’re getting auto-upgraded to v1.x and want to stay on v0.87.9, use this:
 <img width="4020" height="1348" alt="image" src="https://github.com/user-attachments/assets/4a0673c5-0c4f-4bdc-a01e-61eb6496dc3e" />
@@ -376,5 +433,6 @@ rm -rf /tmp/aztec-world-state-*
 rm -rf ~/.aztec/alpha-testnet/data
 ```
 
-
 ## Head back to [start Aztec with command](https://github.com/mztacat/Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-/edit/main/README.md#starting-node) 
+
+
