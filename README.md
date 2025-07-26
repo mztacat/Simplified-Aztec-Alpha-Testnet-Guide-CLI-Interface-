@@ -393,12 +393,7 @@ rm -rf ~/.aztec/alpha-testnet/data
    + This address will post transactions.
    + Only this address needs to be funded with Sepolia ETH if you’re running multiple validators.
 
-### In your current shell use; 
-```
-export COINBASE=0xaddress
-export LOG_LEVEL=debug
-export P2P_MAX_TX_POOL_SIZE=1000000000
-```
+
 
 ## Start Aztec with the command (e.g) 
 ```
