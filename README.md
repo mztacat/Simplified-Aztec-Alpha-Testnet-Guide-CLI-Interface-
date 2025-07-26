@@ -434,7 +434,7 @@ aztec start \
 ----
 # Issues and FAQs 
 
-### If you’re getting auto-upgraded to v1.x and want to stay on v0.87.9, use this:
+### {OUTDATED} If you’re getting auto-upgraded to v1.x and want to stay on v0.87.9, use this:
 <img width="4020" height="1348" alt="image" src="https://github.com/user-attachments/assets/4a0673c5-0c4f-4bdc-a01e-61eb6496dc3e" />
 
 ```
