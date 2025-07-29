@@ -234,14 +234,15 @@ Add the following to Aztec command flag
 
 `e.g` 
 ```
-aztec start --node --archiver --sequencer \
+aztec start \
   --network alpha-testnet \
-  --l1-rpc-urls "" \
-  --l1-consensus-host-urls "" \
-  --sequencer.validatorPrivateKey "" \
-  --p2p.p2pIp "" \
-  --p2p.maxTxPoolSize 1000000000 \
-  --sequencer.governanceProposerPayload 0x54F7fe24E349993b363A5Fa1bccdAe2589D5E5Ef
+  --l1-rpc-urls " " \
+  --l1-consensus-host-urls " " \
+  --sequencer.validatorPrivateKeys "      " \
+  --p2p.p2pIp "      " \
+  --archiver \
+  --node \
+  --sequencer
 ```
 
 
@@ -360,11 +361,6 @@ docker --version
 ```
 
 -----------
-# Aztec Validator Upgrade Guide – v1.1.0 
------
-
-## Aztec Labs has released v1.1.0 for the Adversarial Testnet. All validators are required to upgrade by:
- 📅 Monday, July 21st at 2PM (UTC+1)
 
 
 ### Please follow the appropriate steps based on how you’ve set up your validator.
@@ -429,24 +425,4 @@ aztec start \
   + Replace --sequencer.validatorPrivateKey ➡️ with `--sequencer.validatorPrivateKeys`
   + Provide a comma-separated list of private keys.
   + (Optional) Set `--sequencer.publisherPrivateKey` for transaction posting. Only this key needs Sepolia ETH.
-
-
-----
-# Issues and FAQs 
-
-### {OUTDATED} If you’re getting auto-upgraded to v1.x and want to stay on v0.87.9, use this:
-<img width="4020" height="1348" alt="image" src="https://github.com/user-attachments/assets/4a0673c5-0c4f-4bdc-a01e-61eb6496dc3e" />
-
-```
-aztec-up 0.87.9 && sed -i 's/latest/0.87.9/' "$HOME/.aztec/bin/.aztec-run" && aztec -V
-```
-
-### Clear Data and WORLDSTATE 
-```
-rm -rf /tmp/aztec-world-state-*
-rm -rf ~/.aztec/alpha-testnet/data
-```
-
-## Head back to [start Aztec with command](https://github.com/mztacat/Simplified-Aztec-Alpha-Testnet-Guide-CLI-Interface-/edit/main/README.md#starting-node) 
-
 
