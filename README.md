@@ -213,7 +213,7 @@ aztec start \
   --network <network-name> \
   --l1-rpc-urls "<rpc-url>" \
   --l1-consensus-host-urls "<consensus-url>" \
-  --sequencer.validatorPrivateKey "<private-key>" \
+  --sequencer.validatorPrivateKeys "<private-key>" \
   --p2p.p2pIp "<local-ip>" \
   --p2p.maxTxPoolSize 1000000000 
   --archiver \
@@ -390,11 +390,57 @@ rm -rf ~/.aztec/alpha-testnet/data
    + Only this address needs to be funded with Sepolia ETH if you’re running multiple validators.
 
 
+-------
+# Aztec Update: v2.0.4 (Sequencer / Validator Stability Patch)
+This update moves your node onto the latest public testnet runtime (2.x series).  
+It is REQUIRED if you still want to:
+- stay in the active validator / proposer set
+- keep submitting attestations / block proposals
+- avoid forking yourself on an old state
+
+
+* Upgrade Aztec to V2.0.4
+### 1. Stop the Node
+
+If you're running in `screen`:
+```
+screen -ls
+screen -r aztec
+```
+# then press CTRL + C inside that session
+
+
+### Upgrade Aztec CLI / Binary to v2.0.4
+```
+aztec-up latest 
+```
+
+<img width="3692" height="1272" alt="image" src="https://github.com/user-attachments/assets/518bebcc-c2a4-46a3-9b1b-ee22fbaf21c6" />
+
+### Please update `--network alpha-testnet` to `--network testnet` .
+
+
+### Governance Voting (Make it permanent)
+```
+nano ~/.bashrc
+```
+Add this line at the end 
+
+```
+export GOVERNANCE_PROPOSER_PAYLOAD_ADDRESS=0xDCd9DdeAbEF70108cE02576df1eB333c4244C666
+```
+## CTRL X + Y and click the ENTER
+
+### Then Reload 
+```
+source ~/.bashrc
+```
+
 
 ## Start Aztec with the command (e.g) 
 ```
 aztec start \
-  --network alpha-testnet \
+  --network testnet \
   --l1-rpc-urls " " \
   --l1-consensus-host-urls " " \
   --sequencer.validatorPrivateKeys "      " \
@@ -425,4 +471,33 @@ aztec start \
   + Replace --sequencer.validatorPrivateKey ➡️ with `--sequencer.validatorPrivateKeys`
   + Provide a comma-separated list of private keys.
   + (Optional) Set `--sequencer.publisherPrivateKey` for transaction posting. Only this key needs Sepolia ETH.
+
+
+
+## If facing Error: [ Error fetching file from Storage] 
+The node is tried to grab a snapshot file from Aztec’s snapshot bucket and the file wasn’t there (HTTP 404 = “not found”).
+<img width="3768" height="1464" alt="image" src="https://github.com/user-attachments/assets/04b1cdc8-f98f-49d9-aec4-2c268156c2a4" />
+
+
+### Use the command 
+```
+aztec start \
+  --network testnet \
+  --l1-rpc-urls "http://<L1-RPC-IP>:8545" \
+  --l1-consensus-host-urls "http://<CONSENSUS-IP>:3500" \
+  --sequencer.validatorPrivateKeys "<VALIDATOR_PRIVATE_KEY>" \
+  --sequencer.coinbase "<EVM_REWARD_ADDRESS>" \
+  --sequencer.governanceProposerPayload 0xDCd9DdeAbEF70108cE02576df1eB333c4244C666 \
+  --snapshots-url https://files5.blacknodes.net/Aztec/ \
+  --p2p.p2pIp "<PUBLIC_P2P_IP>" \
+  --p2p.maxTxPoolSize 1000000000 \
+  --archiver \
+  --node \
+  --sequencer
+```
+
+<img width="3696" height="1404" alt="image" src="https://github.com/user-attachments/assets/50ca6956-234c-4ead-b4b9-64bf6a3b313a" />
+
+
+# BACK ON TRACK!
 
