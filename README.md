@@ -12,7 +12,7 @@ sudo su
 cd
 ```
 
-
+## The new valida
 
 
 ## Update Packages 
@@ -465,6 +465,7 @@ echo 'export PATH="$HOME/.aztec/bin:$PATH"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
+
 ### Install Foundry 
 
 ```
@@ -482,14 +483,220 @@ cast --version
 <img width="3920" height="1380" alt="image" src="https://github.com/user-attachments/assets/edafe6f6-818e-4cf8-8007-4a4c8c4a5946" />
 
 
+### Install jQ 
+```
+sudo apt update && sudo apt install jq -y
+```
+
+### Using this script to [Generate New Key and BLS](https://docs.aztec.network/the_aztec_network/operation/keystore/creating_keystores)
+
+Create abd run script
+```
+nano setup.sh 
+```
+
+# Paste in script; 
+
+```
+#!/bin/bash
+
+clear
+echo "──────────────────────────────────────────────"
+echo "     AZTEC 2.1.2 TESTNET — VALIDATOR SETUP"
+echo "──────────────────────────────────────────────"
+echo ""
+
+# --- Collect old validator details ---
+echo "Please provide your previous validator information."
+read -sp "   Enter your OLD Sequencer Private Key (hidden): " OLD_PRIVATE_KEY && echo
+read -p  "   Enter your Sepolia RPC URL (e.g., https://sepolia.infura.io/v3/...): " ETH_RPC
+echo ""
+echo "Starting setup..."
+echo ""
+
+# --- Remove existing keystore (if any) ---
+rm -f ~/.aztec/keystore/key1.json 2>/dev/null
+
+echo "Be prepared to write down your new ETH private key, BLS private key, and ETH address."
+read -p "   Press [Enter] to generate new keys..."
+
+# --- Generate new validator keys ---
+aztec validator-keys new \
+  --fee-recipient 0x0000000000000000000000000000000000000000000000000000000000000000 && echo ""
+
+# --- Extract generated key details ---
+KEYSTORE_FILE="$HOME/.aztec/keystore/key1.json"
+NEW_ETH_PRIVATE_KEY=$(jq -r '.validators[0].attester.eth' "$KEYSTORE_FILE")
+NEW_BLS_PRIVATE_KEY=$(jq -r '.validators[0].attester.bls' "$KEYSTORE_FILE")
+NEW_PUBLIC_ADDRESS=$(cast wallet address --private-key "$NEW_ETH_PRIVATE_KEY")
+
+echo ""
+echo "New keys generated successfully. Please save the following details securely:"
+echo "   - ETH Private Key: $NEW_ETH_PRIVATE_KEY"
+echo "   - BLS Private Key: $NEW_BLS_PRIVATE_KEY"
+echo "   - Public ETH Address: $NEW_PUBLIC_ADDRESS"
+echo ""
+
+echo "You must now fund this address with approximately 0.2–0.5 Sepolia ETH for gas fees."
+echo "   $NEW_PUBLIC_ADDRESS"
+read -p "   After confirming the transaction, press [Enter] to continue..." && echo ""
+
+# --- Approve STAKE token spending ---
+echo "Approving 200,000 STAKE for the Aztec rollup contract..."
+cast send 0x139d2a7a0881e16332d7D1F8DB383A4507E1Ea7A \
+  "approve(address,uint256)" \
+  0xebd99ff0ff6677205509ae73f93d0ca52ac85d67 200000ether \
+  --private-key "$OLD_PRIVATE_KEY" \
+  --rpc-url "$ETH_RPC" && echo ""
+
+# --- Join the Aztec testnet ---
+echo "Registering your validator on the Aztec testnet..."
+aztec add-l1-validator \
+  --l1-rpc-urls "$ETH_RPC" \
+  --network testnet \
+  --private-key "$OLD_PRIVATE_KEY" \
+  --attester "$NEW_PUBLIC_ADDRESS" \
+  --withdrawer "$NEW_PUBLIC_ADDRESS" \
+  --bls-secret-key "$NEW_BLS_PRIVATE_KEY" \
+  --rollup 0xebd99ff0ff6677205509ae73f93d0ca52ac85d67 && echo ""
+
+# --- Completion message ---
+echo ""
+echo "──────────────────────────────────────────────"
+echo "            SETUP COMPLETED SUCCESSFULLY ✅"
+echo "──────────────────────────────────────────────"
+echo ""
+echo "You have successfully joined the new Aztec 2.1.2 testnet."
+echo "Next steps:"
+echo "   1. Restart your node using your new private key and address."
+echo "   2. Monitor logs to confirm your validator is active."
+echo ""
+```
+
+### Run and make executable 
+```
+chmod +x setup.sh
+./setup.sh
+```
+
+<img width="1742" height="508" alt="image" src="https://github.com/user-attachments/assets/02aac28f-5faf-49fe-9a41-305824246a15" />
+
+-----
+# ⚙️ The script Key Points and it's use. 
+1. **Generate New Keys**  
+   - Removes old keystore and creates new ETH + BLS keys.  
+   - Saves them to `~/.aztec/keystore/key1.json`.  
+   - Extracts and displays your ETH private key, BLS private key, and public ETH address.
+
+2. **Fund the New Address**  
+   - Send **0.2–0.5 Sepolia ETH** to your new public address.
+   - COnfirm with ENTER 
+
+3. **Approve STAKE Token**  
+   - Uses your **old sequencer private key** to approve 200,000 STAKE for the rollup contract.  
+   - Required before you can register your validator.
+
+4. **Register the Validator**  
+   - Executes `aztec add-l1-validator` to link your new keys on-chain.  
+   - Confirms your validator on the new Aztec 2.1.2 testnet.  
+   - Afterwards, restart your node using your **new private key and address**.
+-----
+
+<img width="3900" height="1932" alt="image" src="https://github.com/user-attachments/assets/87e7547a-46d4-4f45-ae46-e11ba6a628c9" />
+
+-----
+### Create a .ENV File
+### Remember, from the BLS, PUBLIC ADDRESS you copied, replace them with this 
+
+```
+nano ~/.aztec/.env
+```
+
+### Replace the info with the previously copied data
+
+```
+# ──────────────────────────────────────────────
+# AZTEC 2.1.2 TESTNET — EXAMPLE ENV FILE
+# ──────────────────────────────────────────────
+# This file contains dummy values and structure for configuring
+# a native Aztec validator/sequencer node (non-Docker setup).
+# Copy this to `.env` and replace the placeholders with your values.
+# ──────────────────────────────────────────────
+
+# Old validator private key (the one holding your STAKE tokens)
+OLD_PRIVATE_KEY=0xaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+# Ethereum Sepolia RPC endpoint (Alchemy, Infura, or custom)
+ETH_RPC=https://eth-sepolia.g.alchemy.com/v2/yourAlchemyAPIKeyHere
+
+# ──────────────────────────────────────────────
+# NEW VALIDATOR KEYS
+# ──────────────────────────────────────────────
+# These are generated via `aztec validator-keys new`
+# Replace with your actual keys and address
+NEW_ETH_PRIVATE_KEY=0xbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+NEW_BLS_PRIVATE_KEY=0xcccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+NEW_PUBLIC_ADDRESS=0x1111111111111111111111111111111111111111
+
+# ──────────────────────────────────────────────
+# NETWORK + ROLLUP SETTINGS
+# ──────────────────────────────────────────────
+ROLLUP=0xebd99ff0ff6677205509ae73f93d0ca52ac85d67
+NETWORK=testnet
+SYNC_MODE=full
+
+# ──────────────────────────────────────────────
+# P2P & NODE SETTINGS
+# ──────────────────────────────────────────────
+# Use your server's public IP (change just the IP)
+P2P_IP=123.45.67.89
+P2P_PORT=8080
+BROKER_PORT=8081
+
+# ──────────────────────────────────────────────
+# LOGGING & PERFORMANCE
+# ──────────────────────────────────────────────
+LOG_LEVEL=info
+MAX_TX_POOL_SIZE=1000000000
+
+# ──────────────────────────────────────────────
+# OPTIONAL: LOCAL PATHS
+# ──────────────────────────────────────────────
+# AZTEC_DATA_DIR=/root/.aztec
+# AZTEC_KEYSTORE_PATH=$AZTEC_DATA_DIR/keystore/key1.json
+```
+
+
+### Source .env
+```
+source ~/.aztec/.env
+```
 
 
 
+## Start with command 
+
+```
+aztec start \
+  --network $NETWORK \
+  --l1-rpc-urls "$ETH_RPC" \
+  --l1-consensus-host-urls "$ETH_RPC" \
+  --sequencer.validatorPrivateKeys "$NEW_ETH_PRIVATE_KEY" \
+  --sequencer.coinbase "$NEW_PUBLIC_ADDRESS" \
+  --sequencer.governanceProposerPayload 0xDCd9DdeAbEF70108cE02576df1eB333c4244C666 \
+  --sync-mode $SYNC_MODE \
+  --p2p.p2pIp "$P2P_IP" \
+  --archiver \
+  --node \
+  --sequencer
+```
+<img width="3722" height="392" alt="image" src="https://github.com/user-attachments/assets/0516f2da-962e-4d88-8ff1-95bcd117da45" />
 
 
 
+# --- LATEST 2.2.1 ENDS HERE ----
 
--------
+
 
 
 
