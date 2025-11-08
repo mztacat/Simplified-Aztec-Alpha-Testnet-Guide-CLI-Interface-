@@ -451,8 +451,51 @@ aztec start \
 ```
 <img width="4020" height="768" alt="image" src="https://github.com/user-attachments/assets/99d4555f-8c93-4653-ae10-eb99f4ac1cc4" />
 
+--------
 
-## 🔁 Notes:
+# Migrating Aztec to `V. 2.1.2
+## Make sure Aztec is already installed on server `aztec --v` or use the Install command 
+
+```
+bash -i <(curl -s https://install.aztec.network)
+```
+
+```
+echo 'export PATH="$HOME/.aztec/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Install Foundry 
+
+```
+curl -L https://foundry.paradigm.xyz | bash
+source ~/.bashrc 2>/dev/null || source ~/.profile 2>/dev/null || true
+foundryup
+```
+<img width="2020" height="428" alt="image" src="https://github.com/user-attachments/assets/b62e0981-4480-433e-80c4-969a329f5b7a" />
+
+
+### check if properly installed 
+```
+cast --version
+```
+<img width="3920" height="1380" alt="image" src="https://github.com/user-attachments/assets/edafe6f6-818e-4cf8-8007-4a4c8c4a5946" />
+
+
+
+
+
+
+
+
+
+-------
+
+
+
+
+
+## 🔁 Notes: [ DEPRECATED ] 
 + Changed --sequencer.validatorPrivateKey =>>  `--sequencer.validatorPrivateKeys`
 + Even if you’re using one key, it must still be passed as a string (in quotes) for the plural format.
 + You can add more keys by comma separating them:
